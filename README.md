@@ -1,46 +1,75 @@
-# Astro Starter Kit: Basics
+# Informe de Gestión 2025 · Fondo Lunaria
+
+> **Orillas que abrazan · Mareas que crecen**
+
+Micrositio interactivo del informe anual de gestión 2025 de [Fondo Lunaria](https://fondolunaria.org/), desarrollado en colaboración con [Aquelarre Laboratorio de Diseño Feminista](https://www.aquelarrelab.org/).
+
+---
+
+## Sobre el proyecto
+
+Fondo Lunaria es un fondo feminista colombiano que moviliza recursos económicos para fortalecer procesos colectivos de mujeres y personas trans jóvenes diversas que defienden, exigen y gozan de sus derechos. En 2025, el fondo apoyó **374 organizaciones** y **557 iniciativas** en **29 departamentos** de Colombia.
+
+Este micrositio traduce el informe de gestión impreso a una experiencia digital navegable, aplicando la identidad visual y las ilustraciones creadas por Aquelarre. No es un simple volcado de PDF: es un espacio donde las cifras respiran, los testimonios tienen rostro y la marea feminista se recorre con la brújula apuntando al Sur.
+
+### Alianza estratégica
+
+| Rol | Organización |
+|-----|-------------|
+| Contenido, investigación, datos | **Fondo Lunaria** |
+| Identidad visual, ilustración, diseño | **Aquelarre Laboratorio de Diseño Feminista** |
+| Desarrollo web, micrositio | Este repositorio |
+
+---
+
+## Stack técnico
+
+- **[Astro](https://astro.build/)** v6 — framework web estático
+- HTML + CSS + JavaScript/TypeScript
+- Sin CMS externo (sitio estático generado en build)
+
+---
+
+## Desarrollo local
 
 ```sh
-npm create astro@latest -- --template basics
+# Instalar dependencias
+npm install
+
+# Servidor de desarrollo (localhost:4321)
+npm run dev
+
+# Build de producción
+npm run build
+
+# Previsualizar build
+npm run preview
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Requisitos: Node.js >= 22.12.0
 
-## 🚀 Project Structure
+---
 
-Inside of your Astro project, you'll see the following folders and files:
+## Estructura del proyecto
 
 ```text
 /
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
+├── public/            # Assets estáticos (favicon, fuentes, imágenes)
+├── src/
+│   ├── assets/        # Imágenes, íconos, ilustraciones
+│   ├── components/    # Componentes Astro reutilizables
+│   ├── layouts/       # Plantillas de página
+│   └── pages/         # Rutas del sitio (index.astro, etc.)
+├── astro.config.mjs   # Configuración de Astro
 └── package.json
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+---
 
-## 🧞 Commands
+## Enlaces
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- [Fondo Lunaria](https://fondolunaria.org/)
+- [Informe 2024](https://fondolunaria.org/informe2024/)
+- [Informe 2021](https://fondolunaria.org/informe2021/)
+- [Aquelarre Lab](https://www.aquelarrelab.org/)
+- [Aquelarre en Facebook](https://www.facebook.com/aquelarreilustracion/?locale=es_LA)
