@@ -1,23 +1,75 @@
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Informe de Gestión 2025 · Fondo Lunaria</title>
+
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+<style is:global>
+  /* =========================================
+     DESIGN TOKENS — Marea Feminista
+     Fuente: DESIGN.md
+     ========================================= */
+  :root {
+    /* Fondos */
+    --bg-sand: #f4c454;
+    --bg-ocean: #0b6b6d;
+
+    /* Textos y estructura */
+    --text-main: #28275b;
+    --wood-accent: #ed7a22;
+
+    /* Botones y CTAs */
+    --cta-pink: #eba5c8;
+    --cta-coral: #ef7e7b;
+
+    /* Componentes */
+    --circle-bg: #1f1a3e;
+    --circle-text: #fde070;
+    --map-base: #28275b;
+    --map-selected: #39b490;
+
+    /* Tipografía */
+    --font-heading: 'Discordia', serif;
+    --font-body: 'Lato', sans-serif;
+  }
+
+  /* Reset base */
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: var(--font-body);
+    background-color: var(--bg-sand);
+    color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
 </style>
