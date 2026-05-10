@@ -1,0 +1,510 @@
+# DEVELOP.md — Convenciones de Desarrollo
+
+> **Para el equipo humano y agentes de IA.** Cómo está programado el micrositio del Informe de Gestión 2025 · Fondo Lunaria. Leer antes de crear o modificar cualquier componente, página o estilo.
+
+---
+
+## 1. Qué es este proyecto
+
+Sitio web **estático** construido con **Astro v6**. Todo el contenido se genera en tiempo de compilación (`npm run build`) y se sirve como HTML, CSS y JS simple. No hay backend, no hay base de datos, no hay CMS.
+
+El diseño visual es de **Aquelarre Laboratorio de Diseño Feminista**. Las reglas de diseño están en [`DESIGN.md`](./DESIGN.md). Las reglas de escritura están en [`AGENTS.md`](./AGENTS.md). Este archivo cubre cómo se **programa**.
+
+---
+
+## 2. Stack técnico
+
+| Capa | Tecnología |
+|------|-----------|
+| Framework | Astro v6 |
+| Lenguaje | TypeScript (.astro, .ts) |
+| Estilos | CSS vanilla con Custom Properties (NO Tailwind) |
+| Fuentes | Discordia + Lato (Google Fonts o `@font-face` local) |
+| Ilustraciones | SVG/PNG con transparencia en `public/illustrations/` |
+| Texturas | PNG/SVG de papel rasgado en `public/textures/` |
+| Build | `astro build` → `dist/` (estático) |
+| Deploy | `gh-pages` u otro hosting estático |
+
+---
+
+## 3. Estructura del proyecto
+
+```text
+/
+├── public/
+│   ├── illustrations/    # Ilustraciones de Aquelarre (SVG/PNG)
+│   ├── textures/         # Texturas de papel rasgado (PNG/SVG)
+│   ├── fonts/            # Discordia (.woff2) si no se carga de Google Fonts
+│   ├── favicon.svg
+│   └── favicon.ico
+├── src/
+│   ├── assets/           # Assets importados en componentes (svg, img)
+│   ├── components/       # Componentes .astro reutilizables (una pieza visual por archivo)
+│   ├── layouts/          # Plantillas de página (Layout.astro)
+│   ├── pages/            # Rutas del sitio (index.astro, about.astro, etc.)
+│   └── styles/           # (futuro) Estilos globales compartidos
+├── .agents/
+│   └── skills/           # Skills para agentes de IA (accessibility, google-design-md, impeccable, seo, typescript)
+├── DESIGN.md             # Sistema de diseño visual (tokens, colores, tipografías, componentes)
+├── AGENTS.md             # Guía de tono, léxico y audiencia para IA
+├── astro.config.mjs      # Configuración de Astro
+├── package.json          # Dependencias y scripts
+└── tsconfig.json         # Configuración de TypeScript
+```
+
+### Dónde va cada cosa
+
+| Si necesito... | Va en... | Ejemplo |
+|---------------|---------|---------|
+| Una sección visual nueva (hero, testimonios, cifras) | `src/components/MiSeccion.astro` | `src/components/HeroCifras.astro` |
+| Una página nueva del sitio | `src/pages/mi-pagina.astro` | `src/pages/cuentas-claras.astro` |
+| Una ilustración de Aquelarre | `public/illustrations/` | `public/illustrations/faro.svg` |
+| Una textura de papel rasgado | `public/textures/` | `public/textures/papel-rasgado.png` |
+| Estilos que comparten varios componentes | `src/styles/mi-utilidad.css` | `src/styles/design-tokens.css` |
+| Un ícono o logo importado desde código | `src/assets/` | `src/assets/logo.svg` |
+
+---
+
+## 4. Anatomía de un componente .astro
+
+Todo componente sigue esta estructura de tres bloques:
+
+```astro
+---
+// ─── BLOQUE 1: Frontmatter (TypeScript/JavaScript) ───
+// Importaciones, props, lógica. NUNCA genera HTML visible.
+import OtraCosa from './OtraCosa.astro';
+const { titulo } = Astro.props;
+---
+
+<!-- ─── BLOQUE 2: HTML ─── -->
+<!-- La estructura visible del componente. Usa clases con prefijo del componente. -->
+<section class="mi-componente">
+  <h2 class="mi-componente__titulo">{titulo}</h2>
+  <slot />
+</section>
+
+<style>
+  /* ─── BLOQUE 3: CSS SCOPED ─── */
+  /* Los estilos son locales a este componente por defecto en Astro. */
+  /* Usar las variables CSS definidas en DESIGN.md (Layout.astro :root). */
+
+  .mi-componente {
+    background-color: var(--bg-sand);
+    padding: var(--spacing-xl, 32px);
+  }
+
+  .mi-componente__titulo {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    color: var(--text-main);
+  }
+</style>
+```
+
+### Reglas del frontmatter
+
+- El código en `---` **nunca** produce HTML visible. Solo lógica, imports, props.
+- Las props se reciben con `Astro.props` si el componente acepta parámetros.
+- Las importaciones de otros componentes van aquí.
+
+### Reglas del HTML
+
+- Usar HTML semántico: `<section>`, `<article>`, `<nav>`, `<header>`, `<footer>`.
+- No usar `<div>` cuando existe un elemento semántico apropiado.
+- Cada componente debe poder vivir solo: si lo copiás a otra página, funciona sin depender del contexto externo.
+
+### Reglas del CSS
+
+- Los estilos en `<style>` son **scoped por defecto** (Astro los aísla automáticamente).
+- Usar **Custom Properties** para colores, fuentes y espaciado. Los tokens están definidos en `Layout.astro :root` y documentados en `DESIGN.md`.
+- Nombrar clases con la metodología **BEM simplificada**: `bloque__elemento--modificador`.
+  - Bueno: `.hero__titulo`, `.testimonio__cita`, `.cifra--destacada`
+  - Malo: `.titulo-hero`, `.box1`, `.section-title`
+- El prefijo de las clases debe ser el nombre del componente para evitar colisiones:
+  - `HeroCifras.astro` → clases `.hero-cifras`, `.hero-cifras__numero`
+  - `Testimonios.astro` → clases `.testimonios`, `.testimonios__tarjeta`
+
+---
+
+## 5. El Layout base (`Layout.astro`)
+
+`Layout.astro` es la plantilla que envuelve todas las páginas. Define:
+
+1. El `<!doctype html>` y `<head>` (meta tags, fuentes, título)
+2. Las Custom Properties globales (`:root` con los tokens de DESIGN.md)
+3. El `<slot />` donde se inyecta el contenido de cada página
+
+**Reglas del Layout:**
+- Todo lo que es común a todas las páginas va aquí (fuentes, meta viewport, favicon).
+- Los estilos en `<style is:global>` aplican a todo el sitio.
+- No poner aquí estilos específicos de un componente o sección.
+- Las fuentes se cargan una sola vez en el Layout, no en cada componente.
+
+---
+
+## 6. Cómo crear una página nueva
+
+### Página estándar (ruta directa)
+
+1. Crear `src/pages/mi-pagina.astro`
+2. Estructura:
+```astro
+---
+import Layout from '../layouts/Layout.astro';
+import MiComponente from '../components/MiComponente.astro';
+
+const pageTitle = 'Título de la página';
+---
+
+<Layout>
+  <MiComponente />
+  <!-- Más componentes... -->
+</Layout>
+```
+3. La URL será `/mi-pagina`
+
+### Página con ruta personalizada
+
+Usar carpetas para rutas anidadas:
+- `src/pages/informe/2025.astro` → URL: `/informe/2025`
+- `src/pages/programas/libertad.astro` → URL: `/programas/libertad`
+
+---
+
+## 7. Cómo crear un componente nuevo (paso a paso)
+
+1. **Crear el archivo** en `src/components/` con nombre descriptivo en PascalCase:
+   ```
+   src/components/CifrasClave.astro
+   src/components/TarjetaTestimonio.astro
+   src/components/MapaColombia.astro
+   ```
+
+2. **Escribir la estructura base**:
+```astro
+---
+// Props (si el componente recibe datos)
+export interface Props {
+  numero?: string;
+  etiqueta?: string;
+}
+const { numero, etiqueta } = Astro.props;
+---
+
+<div class="cifras-clave">
+  <span class="cifras-clave__numero">{numero}</span>
+  <span class="cifras-clave__etiqueta">{etiqueta}</span>
+</div>
+
+<style>
+  .cifras-clave { /* ... */ }
+  .cifras-clave__numero {
+    font-family: var(--font-heading);
+    font-size: clamp(3rem, 6vw, 5rem);
+    color: var(--text-main);
+  }
+</style>
+```
+
+3. **Importarlo y usarlo** en una página:
+```astro
+---
+import Layout from '../layouts/Layout.astro';
+import CifrasClave from '../components/CifrasClave.astro';
+---
+
+<Layout>
+  <CifrasClave numero="374" etiqueta="organizaciones apoyadas" />
+</Layout>
+```
+
+### Checklist al crear un componente
+
+- [ ] ¿El nombre del archivo es claro y en PascalCase?
+- [ ] ¿El frontmatter tiene solo lógica (no HTML)?
+- [ ] ¿El HTML usa elementos semánticos (no solo `<div>`)?
+- [ ] ¿Las clases CSS tienen el prefijo del componente?
+- [ ] ¿Los colores y fuentes vienen de variables CSS, no de valores hardcodeados?
+- [ ] ¿El componente funciona si se copia a otra página?
+- [ ] ¿Las ilustraciones tienen `alt` descriptivo (con intención política)?
+
+---
+
+## 8. Convenciones de CSS
+
+### Usar siempre variables CSS para tokens de diseño
+
+```css
+/* ✅ CORRECTO */
+color: var(--text-main);
+background: var(--bg-ocean);
+font-family: var(--font-heading);
+
+/* ❌ INCORRECTO — valores hardcodeados */
+color: #28275b;
+background: #0b6b6d;
+font-family: 'Discordia', serif;
+```
+
+### Referencia rápida de variables disponibles
+
+```css
+/* Fondos */
+--bg-sand       /* #F4C454 — Arena, fondo general */
+--bg-ocean      /* #0B6B6D — Océano profundo, secciones narrativas */
+
+/* Textos */
+--text-main     /* #28275B — Azul noche, texto principal */
+--wood-accent   /* #ED7A22 — Naranja madera, letreros y flechas */
+
+/* Botones */
+--cta-coral     /* #EF7E7B — Botones principales */
+--cta-pink      /* #EBA5C8 — Botones secundarios */
+
+/* Componentes específicos */
+--circle-bg     /* #1F1A3E — Fondo de círculos numerados */
+--circle-text   /* #FDE070 — Texto en círculos numerados */
+--map-base      /* #28275B — Mapa inactivo */
+--map-selected  /* #39B490 — Mapa activo/hover */
+
+/* Tipografía */
+--font-heading  /* Discordia, serif */
+--font-body     /* Lato, sans-serif */
+```
+
+### Prohibiciones absolutas en CSS
+
+- ❌ `color: #000` o `color: black` → usar `var(--text-main)`
+- ❌ `font-family: Arial, Inter, Roboto, system-ui` → usar `var(--font-body)` o `var(--font-heading)`
+- ❌ `box-shadow: ...` → la profundidad se logra con capas, texturas e ilustraciones
+- ❌ `background: linear-gradient(...)` purple-to-blue → no usar degradados genéricos
+- ❌ `border-radius: 10px` en botones → usar `border-radius: 9999px` (pill-shaped)
+- ❌ Gris sobre fondos de color (`color: #888` sobre `--bg-sand`)
+
+---
+
+## 9. Cómo importar imágenes y assets
+
+### Desde `src/assets/` (importación en frontmatter)
+
+```astro
+---
+import miImagen from '../assets/mi-imagen.svg';
+---
+
+<img src={miImagen.src} alt="Descripción con intención política" />
+```
+
+### Desde `public/` (ruta directa)
+
+```astro
+<!-- Ilustraciones de Aquelarre -->
+<img src="/illustrations/faro.svg" alt="Un faro iluminando el océano, guiando la travesía feminista" />
+
+<!-- Texturas -->
+<div class="seccion" style="background-image: url('/textures/papel-rasgado.png')"></div>
+```
+
+### Reglas para assets
+
+- `src/assets/` → para íconos, logos, imágenes que se importan en código y se optimizan en build.
+- `public/` → para ilustraciones, texturas, fuentes y archivos que se referencian por ruta directa.
+- **Toda imagen debe tener `alt` descriptivo.** No "imagen de mujer" sino "Mujer navegante sosteniendo un faro, ilustración de Aquelarre".
+- **Formato preferido:** SVG para ilustraciones vectoriales, WebP para fotos (con fallback PNG).
+
+---
+
+## 10. JavaScript en el proyecto
+
+**Principio:** JS mínimo, vanilla, progresivo. El sitio debe funcionar sin JavaScript.
+
+### Cuándo usar JS
+
+- Interactividad del mapa de Colombia (SVG interactivo)
+- Scroll suave entre secciones
+- Menú de navegación mobile (hamburguesa)
+- Animaciones con Intersection Observer (fade-in al hacer scroll)
+- Contador animado de cifras (opcional, con fallback estático)
+
+### Cuándo NO usar JS
+
+- Para mostrar/ocultar contenido que puede ser HTML+CSS (usar `<details>` o CSS `:target`)
+- Para animaciones que pueden ser CSS (`@keyframes`, `transition`)
+- Para cargar contenido que puede ser estático en build
+
+### Cómo escribir JS en Astro
+
+```astro
+---
+// Frontmatter: lógica de build
+---
+
+<div id="mapa-colombia">
+  <!-- SVG del mapa -->
+</div>
+
+<script>
+  // JS vanilla, se ejecuta en el cliente
+  const mapa = document.getElementById('mapa-colombia');
+  mapa.addEventListener('click', (e) => {
+    const departamento = e.target.closest('[data-departamento]');
+    if (departamento) {
+      console.log('Departamento seleccionado:', departamento.dataset.departamento);
+    }
+  });
+</script>
+```
+
+---
+
+## 11. Nomenclatura de archivos
+
+| Tipo | Convención | Ejemplo |
+|------|-----------|---------|
+| Componentes Astro | PascalCase | `HeroCifras.astro`, `TarjetaTestimonio.astro` |
+| Páginas | kebab-case | `cuentas-claras.astro`, `fondo-en-movimiento.astro` |
+| Layouts | PascalCase | `Layout.astro` |
+| Utilidades/helpers | camelCase | `formatoMoneda.ts` |
+| Imágenes/ilustraciones | kebab-case | `faro-principal.svg`, `papel-rasgado-01.png` |
+| CSS (si se extrae) | kebab-case | `design-tokens.css` |
+
+---
+
+## 12. Flujo de trabajo con Git
+
+Ramas:
+- `main` → producción, sitio publicado
+- `dev` → desarrollo activo
+- `feature/nombre` → features nuevas (ej: `feature/seccion-testimonios`)
+
+Antes de commit:
+1. `npm run build` (que no rompa)
+2. `npm run agents:check` (lint de diseño + auditoría de código)
+
+Commits en español, descriptivos:
+```
+feat: agrega sección de testimonios con tarjetas de papel rasgado
+fix: corrige contraste en botones coral sobre fondo océano
+style: ajusta espaciado de cifras destacadas en mobile
+```
+
+---
+
+## 13. Ejemplo completo: crear la sección "Apoyamos"
+
+### 1. Crear el componente
+
+**`src/components/Apoyamos.astro`:**
+```astro
+---
+export interface Props {
+  cifras: Array<{ numero: string; etiqueta: string }>;
+}
+const { cifras } = Astro.props;
+---
+
+<section id="apoyamos" class="apoyamos">
+  <div class="apoyamos__apertura" aria-hidden="true">
+    <p class="apoyamos__voz-mar">
+      Soy la orilla que abraza {cifras.length} dimensiones del apoyo feminista.
+    </p>
+  </div>
+
+  <div class="apoyamos__cifras">
+    {cifras.map((cifra) => (
+      <article class="apoyamos__cifra">
+        <span class="apoyamos__numero">{cifra.numero}</span>
+        <span class="apoyamos__etiqueta">{cifra.etiqueta}</span>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .apoyamos {
+    background-color: var(--bg-sand);
+    padding: var(--spacing-3xl, 64px) var(--spacing-xl, 32px);
+    text-align: center;
+  }
+
+  .apoyamos__voz-mar {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    color: var(--text-main);
+    max-width: 600px;
+    margin: 0 auto var(--spacing-2xl, 48px);
+  }
+
+  .apoyamos__cifras {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-2xl, 48px);
+  }
+
+  .apoyamos__cifra {
+    text-align: center;
+  }
+
+  .apoyamos__numero {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1;
+  }
+
+  .apoyamos__etiqueta {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--text-main);
+    margin-top: var(--spacing-sm, 8px);
+    opacity: 0.85;
+  }
+</style>
+```
+
+### 2. Usarlo en la página principal
+
+**`src/pages/index.astro`:**
+```astro
+---
+import Layout from '../layouts/Layout.astro';
+import Apoyamos from '../components/Apoyamos.astro';
+---
+
+<Layout>
+  <Apoyamos
+    cifras={[
+      { numero: '374', etiqueta: 'organizaciones apoyadas' },
+      { numero: '557', etiqueta: 'iniciativas' },
+      { numero: '29', etiqueta: 'departamentos' },
+      { numero: '$10.165M', etiqueta: 'movilizados' },
+    ]}
+  />
+</Layout>
+```
+
+---
+
+## 14. Checklist de revisión de código
+
+Antes de dar por terminado un componente o página:
+
+- [ ] ¿El build compila sin errores? (`npm run build`)
+- [ ] ¿`npm run agents:check` pasa sin nuevos problemas?
+- [ ] ¿Los colores, fuentes y espaciado usan variables CSS, no valores hardcodeados?
+- [ ] ¿El HTML es semántico (`<section>`, `<article>`, no solo `<div>`)?
+- [ ] ¿Las clases CSS siguen la convención `componente__elemento`?
+- [ ] ¿Las ilustraciones tienen `alt` descriptivo?
+- [ ] ¿Funciona en mobile? (probar en 320px de ancho)
+- [ ] ¿Los botones son pill-shaped y miden al menos 44x44px?
+- [ ] ¿El texto cumple el tono de AGENTS.md (voz única, sin "beneficiarias", cifras humanizadas)?
+- [ ] ¿No hay `box-shadow`, degradados purple-to-blue, ni fuentes del sistema?
+
+---
+
+*Ante la duda, volver a los tres archivos: `DEVELOP.md` (cómo programar), `DESIGN.md` (cómo se ve), `AGENTS.md` (cómo se escribe).*
