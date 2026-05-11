@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# backup de fondos originales
+public/resources/fondos/_originales/

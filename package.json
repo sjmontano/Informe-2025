@@ -10,20 +10,18 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "design:lint": "npx @google/design.md lint DESIGN.md",
-    "design:diff": "npx @google/design.md diff DESIGN.md",
+    "design:lint": "npx @google/design.md lint docs/DESIGN.md",
+    "design:diff": "npx @google/design.md diff docs/DESIGN.md",
     "impeccable": "impeccable detect src/",
     "impeccable:json": "impeccable detect src/ --json",
-    "agents:check": "npm run design:lint && npm run impeccable",
-    "agents:install": "npm i --save-dev agentation",
-    "agents:run": "npx agentation run --dir agents"
+    "check": "npm run design:lint && npm run impeccable"
   },
   "dependencies": {
     "astro": "^6.3.1"
   },
   "devDependencies": {
     "@google/design.md": "^0.1.1",
-    "agentation": "^1.3.2",
-    "impeccable": "^2.1.8"
+    "impeccable": "^2.1.8",
+    "sharp": "^0.34.5"
   }
 }
