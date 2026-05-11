@@ -1,11 +1,37 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Apoyamos from "../components/apoyamos.astro";
+import FondoEnMovimiento from "../components/fondoEnMovimiento.astro";
+import Inicio from "../components/Inicio.astro";
+import Lista from "../components/lista/ProgressBarList.astro";
+import Orillamar from "../components/Orillamar.astro";
+import Escena from "../components/VisualScene.astro";
+import Layout from "../layouts/Layout.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import ActionStrategies from "../components/actionStrategies.astro";
+
+import SceneryFondos from "../components/SceneryFondos.astro";
 ---
 
 <Layout>
-	<Welcome />
+  <SceneryFondos />
+  <Escena />
+  <Inicio />
+  <Apoyamos />
+  <Orillamar />
+  <Lista />
+  <ActionStrategies />
+  <FondoEnMovimiento />
+  {
+    /*
+	<Mapa />
+	<Detalles/>
+	<Modal />
+	<Testimonios />
+	<SacandoLosTrapos />
+	<CardsInfo />
+	<CardCarousel />
+	<ApoyosDe />
+	<Agradecimiento />
+	<Credits />*/
+  }
 </Layout>
