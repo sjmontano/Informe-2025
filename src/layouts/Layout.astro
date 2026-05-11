@@ -8,13 +8,17 @@
     <meta name="generator" content={Astro.generator} />
     <title>Informe de Gestión 2025 · Fondo Lunaria</title>
 
-    <!-- Fuentes -->
+    <!-- Lato — Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Preload del primer fondo (LCP) -->
+    <link rel="preload" as="image" href="/resources/fondos/fondo-seccion-01-sm.webp" media="(max-width: 640px)" />
+    <link rel="preload" as="image" href="/resources/fondos/fondo-seccion-01.webp" media="(min-width: 641px)" />
   </head>
   <body>
     <slot />
@@ -22,12 +26,26 @@
 </html>
 
 <style is:global>
+  /*
+   * Discordia — fuente de títulos (Aquelarre)
+   * No disponible en Google Fonts. Colocar los archivos .woff2 en /fonts/
+   * y descomentar el @font-face para activarla.
+   *
+   * @font-face {
+   *   font-family: 'Discordia';
+   *   src: url('/fonts/discordia-bold.woff2') format('woff2');
+   *   font-weight: 700;
+   *   font-style: normal;
+   *   font-display: swap;
+   * }
+   */
+
   /* =========================================
      DESIGN TOKENS — Marea Feminista
      Fuente: DESIGN.md
      ========================================= */
   :root {
-    /* Fondos */
+    /* Fondos — arena y océano */
     --bg-sand: #f4c454;
     --bg-ocean: #0b6b6d;
 
@@ -39,7 +57,7 @@
     --cta-pink: #eba5c8;
     --cta-coral: #ef7e7b;
 
-    /* Componentes */
+    /* Componentes especializados */
     --circle-bg: #1f1a3e;
     --circle-text: #fde070;
     --map-base: #28275b;
@@ -48,6 +66,19 @@
     /* Tipografía */
     --font-heading: 'Discordia', serif;
     --font-body: 'Lato', sans-serif;
+
+    /* Espaciado (DESIGN.md § Layout) */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+    --spacing-3xl: 64px;
+    --spacing-4xl: 96px;
+
+    /* Escena — altura total proporcional al ancho (17 secciones × 16:9) */
+    --alto: calc(100vw * 9.5625);
   }
 
   /* Reset base */
@@ -57,7 +88,7 @@
     width: 100%;
     height: 100%;
     font-family: var(--font-body);
-    background-color: var(--bg-sand);
+    background-color: transparent;
     color: var(--text-main);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
