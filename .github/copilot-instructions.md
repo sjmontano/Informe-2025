@@ -15,7 +15,7 @@ Micrositio interactivo del **Informe de Gestión 2025** de Fondo Lunaria, co-cre
 ## Archivos de contexto (leer siempre)
 
 - **[AGENTS.md](./AGENTS.md)** — Tono, léxico, audiencia, reglas de escritura
-- **[DESIGN.md](./DESIGN.md)** — Sistema de diseño: tokens de color, tipografía, componentes, do's/don'ts
+- **[DESIGN.md](./../docs/DESIGN.md)** — Sistema de diseño: tokens de color, tipografía, componentes, do's/don'ts
 
 ## Principios
 

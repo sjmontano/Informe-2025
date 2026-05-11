@@ -8,7 +8,7 @@
 
 Sitio web **estático** construido con **Astro v6**. Todo el contenido se genera en tiempo de compilación (`npm run build`) y se sirve como HTML, CSS y JS simple. No hay backend, no hay base de datos, no hay CMS.
 
-El diseño visual es de **Aquelarre Laboratorio de Diseño Feminista**. Las reglas de diseño están en [`DESIGN.md`](./DESIGN.md). Las reglas de escritura están en [`AGENTS.md`](./AGENTS.md). Este archivo cubre cómo se **programa**.
+El diseño visual es de **Aquelarre Laboratorio de Diseño Feminista**. Las reglas de diseño están en [`DESIGN.md`](./DESIGN.md). Las reglas de escritura están en [`AGENTS.md`](../AGENTS.md). Este archivo cubre cómo se **programa**.
 
 ---
 
@@ -45,8 +45,10 @@ El diseño visual es de **Aquelarre Laboratorio de Diseño Feminista**. Las regl
 │   └── styles/           # (futuro) Estilos globales compartidos
 ├── .agents/
 │   └── skills/           # Skills para agentes de IA (accessibility, google-design-md, impeccable, seo, typescript)
-├── DESIGN.md             # Sistema de diseño visual (tokens, colores, tipografías, componentes)
-├── AGENTS.md             # Guía de tono, léxico y audiencia para IA
+├── docs/
+│   ├── DESIGN.md           # Sistema de diseño visual (tokens, colores, tipografías, componentes)
+│   └── DEVELOP.md          # Convenciones de desarrollo (este archivo)
+├── AGENTS.md               # Guía de tono, léxico y audiencia para IA
 ├── astro.config.mjs      # Configuración de Astro
 ├── package.json          # Dependencias y scripts
 └── tsconfig.json         # Configuración de TypeScript

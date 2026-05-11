@@ -3,8 +3,8 @@
 > **Instrucciones para agentes de IA.** Leer este archivo antes de generar, editar o revisar cualquier contenido del micrositio. Define el tono, el léxico, la audiencia y las reglas de escritura.
 >
 > **Archivos complementarios obligatorios:**
-> - **[DESIGN.md](./DESIGN.md)** — Sistema de diseño visual: tokens de color, tipografía, componentes. Leer junto con este archivo para cualquier tarea de frontend.
-> - **[DEVELOP.md](./DEVELOP.md)** — Convenciones de desarrollo: cómo programar componentes, CSS, assets, naming. Leer antes de escribir código.
+> - **[DESIGN.md](./docs/DESIGN.md)** — Sistema de diseño visual: tokens de color, tipografía, componentes. Leer junto con este archivo para cualquier tarea de frontend.
+> - **[DEVELOP.md](./docs/DEVELOP.md)** — Convenciones de desarrollo: cómo programar componentes, CSS, assets, naming. Leer antes de escribir código.
 > - **[README.md](./README.md)** — Info general del proyecto, stack, comandos.
 
 ---
@@ -221,7 +221,7 @@ Además de los conectores estándar (sin embargo, por ello, en consecuencia), us
 
 ### Herramientas de agente disponibles
 
-- **`DESIGN.md lint`** — Validar tokens, referencias rotas, contraste WCAG: `npx @google/design.md lint DESIGN.md`
+- **`DESIGN.md lint`** — Validar tokens, referencias rotas, contraste WCAG: `npx @google/design.md lint docs/DESIGN.md`
 - **`impeccable`** — Auditoría de calidad frontend: `npx impeccable detect src/`
 
 ---
