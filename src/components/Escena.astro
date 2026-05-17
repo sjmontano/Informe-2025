@@ -1,0 +1,586 @@
+---
+/**
+ * Escena.astro — Elementos decorativos por sección
+ *
+ * Props:
+ *   desde  (default 0)  — primera sección a mostrar
+ *   hasta  (default 16) — última sección a mostrar
+ *
+ * Cada sección es un array plano. Agregar/borrar un elemento = una línea.
+ * top(seccion, offset): calcula posición relativa a las secciones visibles.
+ * Sección global s se convierte a índice local automáticamente.
+ */
+
+export interface Props {
+  desde?: number;
+  hasta?: number;
+}
+
+const { desde = 0, hasta = 16 } = Astro.props;
+const TOTAL = hasta - desde + 1;
+const SEC = 100 / TOTAL;
+
+const top = (s: number, fraccion: number) => {
+  const local = s - desde;
+  return `calc(${((local + fraccion) * SEC).toFixed(4)} * var(--alto) / 100)`;
+};
+
+const enRango = (s: number) => s >= desde && s <= hasta;
+
+type Item = { src: string; css: string; alt: string; z?: number };
+
+const NUBE = "/resources/escenario/escenario-nube-rosa.webp";
+
+// ─── 0 · PORTADA ────────────────────────────────────────────────────
+const PORTADA: Item[] = [
+  {
+    src: "/resources/marcas/marca-lunaria-alta-2023.webp",
+    css: `top:${top(0, 0.133)}; left:35vw; width:13vw`,
+    alt: "Fondo Lunaria, fondo feminista colombiano",
+  },
+  {
+    src: NUBE,
+    css: `top:${top(0, 0.124)}; left:-4vw; width:20vw`,
+    alt: "Nube rosa",
+  },
+  {
+    src: NUBE,
+    css: `top:${top(0, -0.1)}; left:15vw; width:25vw`,
+    alt: "Nube rosa",
+  },
+  {
+    src: NUBE,
+    css: `top:${top(0, 0.38)}; right:25vw; width:10vw`,
+    alt: "Nube rosa",
+  },
+  {
+    src: NUBE,
+    css: `top:${top(0, -0.03)}; right:-10vw; width:25vw`,
+    alt: "Nube rosa",
+  },
+  {
+    src: "/resources/escenario/escenario-estrella-mar.webp",
+    css: `top:${top(0, 0.54)}; right:50vw; width:6vw`,
+    alt: "Estrella de mar",
+    z: 30,
+  },
+  {
+    src: "/resources/personajes/personaje-pescadores.webp",
+    css: `top:${top(0, 0.5)}; right:5vw; width:35vw`,
+    alt: "Pescadores, ilustración de Aquelarre",
+  },
+];
+
+// ─── 1 · CARTA ──────────────────────────────────────────────────────
+const CARTA: Item[] = [
+  {
+    src: "/resources/contenedor/contenedor-letrero-presentacion-1.webp",
+    css: `top:${top(1, 0.12)}; left:4vw; width:56vw`,
+    alt: "Letrero de presentación",
+  },
+  {
+    src: "/resources/escenario/escenario-cactus.webp",
+    css: `top:${top(1, 0.36)}; left:0.6vw; width:18vw`,
+    alt: "Cactus",
+  },
+  {
+    src: "/resources/escenario/escenario-piedras.webp",
+    css: `top:${top(1, 0.725)}; left:44.4vw; width:11vw`,
+    alt: "Piedras",
+  },
+  {
+    src: "/resources/escenario/escenario-palmeras.webp",
+    css: `top:${top(1, 0.1)}; right:-6vw; width:45vw`,
+    alt: "Palmeras",
+  },
+  {
+    src: "/resources/escenario/escenario-arbusto.webp",
+    css: `top:${top(1, 0.735)}; left:3.5vw; width:12vw`,
+    alt: "Arbusto",
+  },
+  {
+    src: "/resources/escenario/escenario-arbusto.webp",
+    css: `top:${top(1, 0.62)}; right:4vw; width:12vw; transform:scaleX(-1)`,
+    alt: "Arbusto",
+  },
+  {
+    src: "/resources/escenario/escenario-arbusto.webp",
+    css: `top:${top(1, 0.64)}; right:11vw; width:12vw`,
+    alt: "Arbusto",
+  },
+  {
+    src: "/resources/escenario/escenario-caracol.webp",
+    css: `top:${top(1, 0.901)}; left:20vw; width:8vw`,
+    alt: "Caracol",
+  },
+  {
+    src: "/resources/escenario/escenario-estrella-mar.webp",
+    css: `top:${top(1, 0.935)}; right:15vw; width:6vw`,
+    alt: "Estrella de mar",
+  },
+  {
+    src: "/resources/escenario/escenario-conchas.webp",
+    css: `top:${top(1, 0.595)}; left:45vw; width:5vw`,
+    alt: "Conchas",
+  },
+  {
+    src: "/resources/personajes/personaje-vendedor-coco.webp",
+    css: `top:${top(1, 0.5)}; right:12vw; width:35vw`,
+    alt: "Vendedor de coco, ilustración de Aquelarre",
+  },
+];
+
+// ─── 2 · APOYAMOS ───────────────────────────────────────────────────
+const APOYAMOS: Item[] = [
+  {
+    src: "/resources/personajes/personaje-canoa-2.webp",
+    css: `top:${top(2, 0.05)}; left:5vw; width:20vw`,
+    alt: "Canoa, ilustración de Aquelarre",
+  },
+  {
+    src: "/resources/personajes/personaje-musicos.webp",
+    css: `top:${top(2, 0.25)}; right:3vw; width:20vw`,
+    alt: "Músicos, ilustración de Aquelarre",
+  },
+  {
+    src: "/resources/personajes/personaje-artesana-individual.webp",
+    css: `top:${top(2, 0.4)}; left:55vw; width:20vw`,
+    alt: "Artesana, ilustración de Aquelarre",
+  },
+  {
+    src: "/resources/gifs/gif-pez-nadador-ensamblado-1.webp",
+    css: `top:${top(2, 0.45)}; left:2vw; width:20vw`,
+    alt: "Pez nadador, ilustración de Aquelarre",
+  },
+  {
+    src: "/resources/gifs/gif-medusa-ensamblada.webp",
+    css: `top:${top(2, 0.55)}; right:5vw; width:20vw`,
+    alt: "Medusa, ilustración de Aquelarre",
+  },
+  {
+    src: "/resources/gifs/gif-flamenco-ensamblado.webp",
+    css: `top:${top(2, 0.6)}; left:25vw; width:20vw`,
+    alt: "Flamenco, ilustración de Aquelarre",
+  },
+  {
+    src: "/resources/gifs/gif-lagartija.webp",
+    css: `top:${top(2, 0.7)}; right:1vw; width:20vw`,
+    alt: "Lagartija, ilustración de Aquelarre",
+  },
+  {
+    src: "/resources/escenario/escenario-arbusto.webp",
+    css: `top:${top(2, 0.85)}; left:0vw; width:12vw`,
+    alt: "Arbusto decorativo",
+  },
+];
+
+// ─── 3 · LIBERTAD Y DEMOCRACIA ─────────────────────────────────────
+const LIBERTAD: Item[] = [
+  {
+    src: "/resources/contenedor/contenedor-letrero-1.webp",
+    css: `top:${top(3, 0.085)}; left:5vw; width:40vw`,
+    alt: "Letrero Libertad y Democracia",
+  },
+  {
+    src: "/resources/escenario/escenario-silla.webp",
+    css: `top:${top(3, 0.51)}; right:3vw; width:15vw`,
+    alt: "Silla",
+  },
+  {
+    src: "/resources/escenario/escenario-cactus.webp",
+    css: `top:${top(3, 0.68)}; left:1vw; width:15vw`,
+    alt: "Cactus",
+  },
+  {
+    src: "/resources/escenario/escenario-piedras.webp",
+    css: `top:${top(3, 0.85)}; left:60vw; width:10vw`,
+    alt: "Piedras",
+  },
+];
+
+// ─── 4 · AUTONOMÍA Y SOSTENIBILIDAD ────────────────────────────────
+const AUTONOMIA: Item[] = [
+  {
+    src: "/resources/contenedor/contenedor-letrero-guion-bajo.webp",
+    css: `top:${top(4, 0.0)}; left:0vw; width:80vw`,
+    alt: "Letrero cifras",
+  },
+  {
+    src: "/resources/contenedor/contenedor-letrero-guion-bajo.webp",
+    css: `top:${top(4, 0.0)}; left:50vw; width:46vw`,
+    alt: "Letrero estadísticas",
+  },
+  {
+    src: "/resources/personajes/personaje-canoas-grupo.webp",
+    css: `top:${top(4, 0.17)}; left:30vw; width:40vw`,
+    alt: "Canoas, ilustración de Aquelarre",
+  },
+  {
+    src: "/resources/escenario/escenario-estrella-mar.webp",
+    css: `top:${top(4, 0.68)}; right:5vw; width:5vw`,
+    alt: "Estrella de mar",
+  },
+];
+
+// ─── 5 · FONDO EN MOVIMIENTO ────────────────────────────────────────
+const FONDO_MOVIMIENTO: Item[] = [
+  {
+    src: "/resources/contenedor/contenedor-letrero-1.webp",
+    css: `top:${top(5, 0.051)}; left:3vw; width:35vw`,
+    alt: "Letrero Fondo en Movimiento",
+  },
+  {
+    src: "/resources/personajes/personaje-leona-marina.webp",
+    css: `top:${top(5, 0.17)}; left:40vw; width:35vw`,
+    alt: "Leona marina, ilustración de Aquelarre",
+  },
+];
+
+// ─── 7 · DISEÑO E ILUSTRACIÓN ───────────────────────────────────────
+const DISENO: Item[] = [
+  {
+    src: "/resources/contenedor/contenedor-marco-fotos-1.webp",
+    css: `top:${top(7, 0.17)}; left:15vw; width:70vw`,
+    alt: "Marco para video",
+  },
+];
+
+// ─── 8 · TESTIMONIOS ────────────────────────────────────────────────
+const TESTIMONIOS: Item[] = [
+  {
+    src: "/resources/contenedor/contenedor-marco-fotos-1.webp",
+    css: `top:${top(8, 0.085)}; left:10vw; width:35vw`,
+    alt: "Marco para testimonios",
+  },
+  {
+    src: "/resources/personajes/personaje-artesana-individual.webp",
+    css: `top:${top(8, 0.034)}; right:5vw; width:12vw`,
+    alt: "Artesana, ilustración de Aquelarre",
+  },
+];
+
+// ─── 9 · CUENTAS CLARAS ─────────────────────────────────────────────
+const CUENTAS_CLARAS: Item[] = [
+  {
+    src: "/resources/escenario/escenario-cactus.webp",
+    css: `top:${top(9, 0.085)}; left:1vw; width:12vw`,
+    alt: "Cactus",
+  },
+  {
+    src: "/resources/escenario/escenario-arbusto.webp",
+    css: `top:${top(9, 0.17)}; right:2vw; width:10vw`,
+    alt: "Arbusto",
+  },
+  {
+    src: "/resources/escenario/escenario-conchas.webp",
+    css: `top:${top(9, 0.51)}; right:5vw; width:6vw`,
+    alt: "Conchas",
+  },
+];
+
+// ─── 10 · TERRITORIOS ───────────────────────────────────────────────
+const TERRITORIOS: Item[] = [
+  {
+    src: "/resources/contenedor/contenedor-letrero-3.webp",
+    css: `top:${top(10, 0.085)}; right:2vw; width:35vw`,
+    alt: "Letrero Territorios",
+  },
+  {
+    src: "/resources/escenario/escenario-palmeras.webp",
+    css: `top:${top(10, 0.051)}; left:0vw; width:20vw`,
+    alt: "Palmeras",
+  },
+];
+
+// ─── 12 · ALIANZAS ──────────────────────────────────────────────────
+const ALIANZAS: Item[] = [
+  {
+    src: "/resources/contenedor/contenedor-letrero.webp",
+    css: `top:${top(12, 0.051)}; left:3vw; width:35vw`,
+    alt: "Letrero Alianzas",
+  },
+  {
+    src: "/resources/personajes/personaje-pescador-ajuste.webp",
+    css: `top:${top(12, 0.34)}; left:10vw; width:40vw`,
+    alt: "Pescador, ilustración de Aquelarre",
+  },
+];
+
+// ─── 13 · INVESTIGACIÓN ─────────────────────────────────────────────
+const INVESTIGACION: Item[] = [
+  {
+    src: "/resources/contenedor/contenedor-marco-fotos-1.webp",
+    css: `top:${top(13, 0.085)}; right:3vw; width:30vw`,
+    alt: "Marco para diplomado",
+  },
+  {
+    src: "/resources/escenario/escenario-cactus-1.webp",
+    css: `top:${top(13, 0.68)}; left:1vw; width:12vw`,
+    alt: "Cactus",
+  },
+  {
+    src: "/resources/escenario/escenario-planta-1.webp",
+    css: `top:${top(13, 0.765)}; right:2vw; width:18vw`,
+    alt: "Planta",
+  },
+];
+
+// ─── 14 · PROYECCIÓN ────────────────────────────────────────────────
+const PROYECCION: Item[] = [
+  {
+    src: "/resources/contenedor/contenedor-marco-fotos-1.webp",
+    css: `top:${top(14, 0.085)}; left:5vw; width:40vw`,
+    alt: "Marco",
+  },
+  {
+    src: "/resources/escenario/escenario-cactus.webp",
+    css: `top:${top(14, 0.68)}; left:1vw; width:12vw`,
+    alt: "Cactus",
+  },
+  {
+    src: "/resources/escenario/escenario-piedras.webp",
+    css: `top:${top(14, 0.765)}; right:3vw; width:10vw`,
+    alt: "Piedras",
+  },
+];
+
+// ─── 15 · AGRADECIMIENTOS ───────────────────────────────────────────
+const AGRADECIMIENTOS: Item[] = [
+  {
+    src: "/resources/personajes/personaje-pescador-ajuste.webp",
+    css: `top:${top(15, 0.17)}; right:5vw; width:25vw`,
+    alt: "Pescador, ilustración de Aquelarre",
+  },
+  {
+    src: "/resources/escenario/escenario-estrella-mar.webp",
+    css: `top:${top(15, 0.68)}; left:5vw; width:5vw`,
+    alt: "Estrella de mar",
+  },
+];
+
+// ─── 16 · CIERRE ────────────────────────────────────────────────────
+const CIERRE: Item[] = [
+  {
+    src: NUBE,
+    css: `top:${top(16, 0.0)}; left:72vw; width:35vw`,
+    alt: "Nube rosa",
+  },
+];
+---
+
+<div class="escena" aria-hidden="true">
+  {
+    enRango(0) &&
+      PORTADA.map((e, i) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading={i === 0 ? "eager" : "lazy"}
+          fetchpriority={i === 0 ? "high" : "auto"}
+          decoding="async"
+        />
+      ))
+  }
+
+  {
+    enRango(1) &&
+      CARTA.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+
+  {
+    enRango(2) &&
+      APOYAMOS.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+
+  {
+    enRango(3) &&
+      LIBERTAD.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+
+  {
+    enRango(4) &&
+      AUTONOMIA.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+
+  {
+    enRango(5) &&
+      FONDO_MOVIMIENTO.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+
+  {
+    enRango(7) &&
+      DISENO.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+
+  {
+    enRango(8) &&
+      TESTIMONIOS.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+
+  {
+    enRango(9) &&
+      CUENTAS_CLARAS.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+
+  {
+    enRango(10) &&
+      TERRITORIOS.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+
+  {
+    enRango(12) &&
+      ALIANZAS.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+
+  {
+    enRango(13) &&
+      INVESTIGACION.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+
+  {
+    enRango(14) &&
+      PROYECCION.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+
+  {
+    enRango(15) &&
+      AGRADECIMIENTOS.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+
+  {
+    enRango(16) &&
+      CIERRE.map((e) => (
+        <img
+          class="escena__img"
+          src={e.src}
+          alt={e.alt}
+          style={e.css + (e.z ? `; z-index: ${e.z}` : "")}
+          loading="lazy"
+        />
+      ))
+  }
+</div>
+
+<style>
+  .escena {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: var(--alto);
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .escena__img {
+    position: absolute;
+    object-fit: cover;
+    user-select: none;
+    z-index: 0;
+  }
+</style>
