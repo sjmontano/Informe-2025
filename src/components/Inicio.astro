@@ -1,0 +1,64 @@
+---
+/**
+ * ESCENA 0 · PORTADA
+ *
+ * Título principal y subtítulo.
+ * Posicionado con calc() relativo a --alto definido en Layout.
+ */
+---
+
+<header class="inicio">
+  <h1 class="inicio__titulo">
+    Orillas<br />
+    <i class="inicio__que">que</i> abrazan.<br />
+    Mareas<br />
+    <i class="inicio__que">que</i> crecen.
+  </h1>
+
+  <p class="inicio__subtitulo">Informe de gestión 2025</p>
+</header>
+
+<style>
+  .inicio {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+  }
+
+  .inicio__titulo {
+    position: absolute;
+    top: calc(var(--alto) * 5 / 100);
+    left: 49%;
+    width: 50%;
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, calc(var(--alto) * 3 / 100), 5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-main);
+    margin: 0;
+  }
+
+  .inicio__que {
+    font-style: italic;
+    font-size: 0.6em;
+  }
+
+  .inicio__subtitulo {
+    position: absolute;
+    top: calc(var(--alto) * 18.5 / 100);
+    right: 18%;
+    width: 35%;
+    font-family: var(--font-body);
+    font-size: clamp(0.65rem, calc(var(--alto) * 0.8 / 100), 3.5rem);
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--text-main);
+    background-color: var(--cta-pink);
+    border-radius: var(--spacing-sm);
+    padding: var(--spacing-xs) 0;
+    padding-left: 2%;
+  }
+
+</style>
